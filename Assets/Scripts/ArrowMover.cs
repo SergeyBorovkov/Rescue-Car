@@ -12,20 +12,11 @@ public class ArrowMover : MonoBehaviour
     private Action _isMaxAngleAchieved;
     private Coroutine _tiltJob;
     private WaitForSeconds _pause;
-    private float _defaultRotationOnX;
-    private float _defaultRotationOnY;
+    private Vector3 _defaultRotation;    
     private float _currentRotationOnZ;
     private float _angleAmplitude;
     private float _tiltInterval = 0.5f;
     private float _speedIndexForTilt = 0.95f;
-
-    private void Start()
-    {
-        _defaultRotationOnX = transform.localRotation.eulerAngles.x;
-        _defaultRotationOnY = transform.localRotation.eulerAngles.y;
-        _angleAmplitude = _maxAngleOnZ - _minAngleOnZ;
-        _pause = new WaitForSeconds(_tiltInterval);
-    }
 
     private void OnEnable()
     {
@@ -35,6 +26,18 @@ public class ArrowMover : MonoBehaviour
     private void OnDisable()
     {
         _isMaxAngleAchieved -= OnMaxAngleAchieved;
+    }
+
+    private void Start()
+    {
+        _defaultRotation = transform.localRotation.eulerAngles;        
+        _angleAmplitude = _maxAngleOnZ - _minAngleOnZ;
+        _pause = new WaitForSeconds(_tiltInterval);
+    }
+
+    private void Update()
+    {       
+        Move();        
     }
 
     private void OnMaxAngleAchieved()
@@ -50,18 +53,13 @@ public class ArrowMover : MonoBehaviour
         }
     }
 
-    private void Update()
-    {       
-        Move();        
-    }
-
     private void Move()
     {
         float currentSpeedIndex = (_carMover.CurrentSpeed - _carMover.StartSpeed) / (_carMover.MaxSpeed - _carMover.StartSpeed);
 
         _currentRotationOnZ = _minAngleOnZ + _angleAmplitude * currentSpeedIndex;
 
-        transform.localRotation = Quaternion.Euler(_defaultRotationOnX, _defaultRotationOnY, _currentRotationOnZ);
+        transform.localRotation = Quaternion.Euler(_defaultRotation.x, _defaultRotation.y, _currentRotationOnZ);
         
         if (currentSpeedIndex > _speedIndexForTilt)                    
             _isMaxAngleAchieved?.Invoke();        

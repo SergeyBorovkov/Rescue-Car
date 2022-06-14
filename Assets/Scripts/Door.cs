@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DoorOpener : MonoBehaviour
+public class Door : MonoBehaviour
 {
     [SerializeField] private float _openAngle;
 

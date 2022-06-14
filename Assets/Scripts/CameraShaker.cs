@@ -1,7 +1,7 @@
 using FirstGearGames.SmoothCameraShaker;
 using UnityEngine;
 
-public class CameraShakerController : MonoBehaviour
+public class CameraShaker : MonoBehaviour
 {
     [SerializeField] private ShakeData _shakeData;      
 

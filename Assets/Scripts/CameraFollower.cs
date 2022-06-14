@@ -7,7 +7,7 @@ public class CameraFollower : MonoBehaviour
 
     private Vector3 _offset;
     private Vector3 _targetPosition;
-    private Vector3 _currentVelocity = Vector3.zero;
+    private Vector3 _currentVelocity;
 
     private void Awake()
     {

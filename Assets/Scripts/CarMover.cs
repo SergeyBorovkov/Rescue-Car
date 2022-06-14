@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CarMover : MonoBehaviour
 {
-    [SerializeField] private PusherCatchController _catcher;
+    [SerializeField] private PusherCatcher _catcher;
     [SerializeField] private float _startSpeed;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _turnSpeed;
@@ -37,11 +37,6 @@ public class CarMover : MonoBehaviour
         _catcher.PushersCountChanged -= OnPushersCountChanged;
     }
 
-    private void OnPushersCountChanged(int currentPushers)
-    {
-        _targetSpeed = _startSpeed + (float)currentPushers / _catcher.MaxPushers * (_maxSpeed - _startSpeed);
-    }
-
     private void Update()
     {
         GatherInput();
@@ -53,12 +48,17 @@ public class CarMover : MonoBehaviour
         Move();
     }
 
+    private void OnPushersCountChanged(int currentPushers)
+    {
+        _targetSpeed = _startSpeed + (float)currentPushers / _catcher.MaxPushers * (_maxSpeed - _startSpeed);
+    }
+
     private void GatherInput()
     {
         if (_isNonPlayer == false)
             _input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
-        else        
-            _input = new Vector3(0, 0, 0);
+        else
+            _input = Vector3.zero;
     }
 
     private void LookAt()
@@ -74,6 +74,7 @@ public class CarMover : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, _turnSpeed * Time.deltaTime);
         }
     }
+
     private void Move()
     {        
         _currentSpeed = Mathf.SmoothStep(_currentSpeed, _targetSpeed, Time.deltaTime * _currentSpeedIncreaseIndex);

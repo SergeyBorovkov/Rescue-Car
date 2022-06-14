@@ -3,13 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Pusher : MonoBehaviour
 {    
-    private Animator _animator;    
-    private float _pause = 2f;
-    
     public bool IsDefault;
     public bool IsPushing;
     public bool CanPush = true;
         
+    private Animator _animator;    
+    private float _pause = 2f;
+    
     private void Awake()
     {        
         _animator = GetComponent<Animator>();
@@ -26,6 +26,7 @@ public class Pusher : MonoBehaviour
                 StopPushAnimation();
                 
                 CanPush = false;
+
                 Invoke(nameof(SetCanPushTrue), _pause);
 
                 transform.parent = null;                
@@ -41,11 +42,6 @@ public class Pusher : MonoBehaviour
     private void StopPushAnimation()
     {
         _animator.SetBool(nameof(IsPushing), false);
-    }
-
-    public void ChangeAnimationSpeed(float speed)
-    {
-        _animator.speed = speed;
     }
 
     private void SetCanPushTrue()

@@ -19,6 +19,16 @@ public class RoadElement : MonoBehaviour
             RandomRotateOnY();
     }
 
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
+
     private void RandomRotateOnY()
     {
         int randomAngle = Random.Range(0, _maxRandomAngleOnY);

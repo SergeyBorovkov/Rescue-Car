@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PusherCatchController : MonoBehaviour
+public class PusherCatcher : MonoBehaviour
 {
     [SerializeField] private Pusher _pusherPrefab;
     [SerializeField] private List<Transform> _pushPoints;
-    [SerializeField] private DoorOpener _leftDoorOpener;
-    [SerializeField] private DoorOpener _rightDoorOpener;
+    [SerializeField] private Door _leftDoor;
+    [SerializeField] private Door _rightDoor;
     [SerializeField] private Transform _leftDoorPoint;
     [SerializeField] private Transform _rightDoorPoint;
 
-    private Pusher _defaultPusher;
-    
     public event Action <int> PushersCountChanged;
+
+    private Pusher _defaultPusher;    
 
     public int MaxPushers => _pushPoints.Count;
 
@@ -48,6 +48,13 @@ public class PusherCatchController : MonoBehaviour
             UpdatePushersCount();        
     }
 
+    private void UpdatePushersCount()
+    {
+        int count = _pushPoints.FindAll(p => p.childCount > 0).Count;
+
+        PushersCountChanged?.Invoke(count);        
+    }
+
     private bool TryGetFreePushPoint(out Transform freePoint)
     {
         freePoint = _pushPoints.FirstOrDefault(p => p.childCount == 0);
@@ -71,16 +78,9 @@ public class PusherCatchController : MonoBehaviour
     private void OpenDoor(Transform doorPoint)
     {                
         if (doorPoint == _leftDoorPoint)        
-            _leftDoorOpener.Open();
+            _leftDoor.Open();
 
         if (doorPoint == _rightDoorPoint)
-            _rightDoorOpener.Open();
-    }
-
-    public void UpdatePushersCount()
-    {
-        int count = _pushPoints.FindAll(p => p.childCount > 0).Count;
-
-        PushersCountChanged?.Invoke(count);        
+            _rightDoor.Open();
     }
 }

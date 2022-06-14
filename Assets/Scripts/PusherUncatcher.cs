@@ -10,6 +10,7 @@ public class PusherUncatcher : MonoBehaviour
     public void RestartShakingCapability()
     {
         _canShake = false;
+
         Invoke(nameof(SetCanShakeTrue), _pause);
     }
 

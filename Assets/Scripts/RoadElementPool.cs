@@ -12,7 +12,7 @@ public class RoadElementPool : MonoBehaviour
         for (int i = 0; i < _capacity; i++)
         {
             RoadElement spawned = Instantiate(element, parent);
-            spawned.gameObject.SetActive(false);
+            spawned.Deactivate();
             spawned.name = parent.name;
 
             _pool.Add(spawned);

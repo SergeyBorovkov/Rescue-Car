@@ -7,17 +7,15 @@ public class RoadElementSpawner : RoadElementPool
     [SerializeField] private List<RoadElement> _elements;
     [SerializeField] private List<Transform> _elementsTransforms;
     [SerializeField] private Transform _car;
-
-    [SerializeField] LayerMask _layer;
+    [SerializeField] private LayerMask _layer;
     [SerializeField] private int _lengthOnZ;
-
-    [SerializeField] float _elementDistance;
+    [SerializeField] private float _elementDistance;
     [SerializeField] private int _leftGenerationPointOnX;
     [SerializeField] private int _rightGenerationPointOnX;
         
     private int _zStart;
     private int _zEnd;
-    private int tempZ;
+    private int _tempZ;
     private int _fillingOffsetOnZ;
 
     private void Start()
@@ -35,11 +33,11 @@ public class RoadElementSpawner : RoadElementPool
 
     private void Update()
     {
-        tempZ = Mathf.RoundToInt(_car.transform.position.z);
+        _tempZ = Mathf.RoundToInt(_car.transform.position.z);
 
-        if (tempZ % _lengthOnZ == 0 && tempZ != _zStart)
+        if (_tempZ % _lengthOnZ == 0 && _tempZ != _zStart)
         {
-            _zStart = tempZ;
+            _zStart = _tempZ;
 
             _zEnd = _zStart + _lengthOnZ;
 
@@ -80,7 +78,7 @@ public class RoadElementSpawner : RoadElementPool
         if (Physics.CheckSphere(correctedGenerationPosition, _elementDistance, _layer) == false)
         {
             randomElement.transform.position = correctedGenerationPosition;
-            randomElement.gameObject.SetActive(true);
+            randomElement.Activate();
         }
     }
 
